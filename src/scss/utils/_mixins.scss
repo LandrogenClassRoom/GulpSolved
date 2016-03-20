@@ -1,0 +1,28 @@
+@mixin container {
+  width: $container_width;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@mixin ico-block {
+  content: "";
+  position: absolute;
+  display: block;
+}
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
+
+
+@mixin justify_block {
+  &:after {
+    content:'';
+    width: 100%;
+    display: inline-block;
+  }
+}
