@@ -2,23 +2,18 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     prefixer = require('gulp-autoprefixer'),
     uglify = require('gulp-uglify'),
-    //sass = require('gulp-sass'),
+    sass = require('gulp-sass'),
     rigger = require('gulp-rigger'),
-    cssmin = require('gulp-clean-css'),
-    rename = require('gulp-rename'),
+    cssmin = require('gulp-minify-css'),
     connect = require('gulp-connect'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
-    //jade = require('gulp-jade'),
+   // jade = require('gulp-jade'),
     sprites = require('gulp.spritesmith'),
-    compass = require('gulp-compass'),
-    p = require('path');
+    compass = require('gulp-compass');
 
 gulp.task('connect', function () {
-    connect.server({
-        root: 'public/',
-        livereload:true
-    });
+    connect.server();
 });
 
 var path = {
@@ -51,6 +46,16 @@ var path = {
     }
 };
 
+gulp.task('compass', function() {
+  gulp.src('./src/*.scss')
+    .pipe(compass({
+      config_file: './config.rb',
+      css: 'stylesheets',
+      sass: 'sass'
+    }))
+    .pipe(gulp.dest('app/assets/temp'));
+});
+
 gulp.task('html:build', function () {
     gulp.src(path.src.html) 
         .pipe(rigger())
@@ -60,45 +65,23 @@ gulp.task('html:build', function () {
 
 gulp.task('js:build', function () {
     gulp.src(path.src.js) 
-        .pipe(rigger())
+        //.pipe(rigger())
         .pipe(uglify()) 
         .pipe(gulp.dest(path.build.js))
         .pipe(connect.reload());
 });
 
-gulp.task("style:build", function(){
-    gulp.src(path.src.style)
-        .pipe(compass({
-            project: p.join(__dirname, ''),
-            // config_file: 'config.rb',
-            css: path.build.style,
-            sass: path.src.style
-        }))
+gulp.task('style:build', function () {
+    gulp.src(path.src.style) 
+        .pipe(sass({outputStyle: 'expanded'}))
         .pipe(prefixer({browsers:["chrome 37","firefox 30","ie 9", "opera 25", "safari 6"]}))
-        .pipe(gulp.dest(path.build.css))
-        .pipe(rename({ suffix: '.min' }))
         .pipe(cssmin())
         .pipe(gulp.dest(path.build.css))
         .pipe(connect.reload());
 });
 
-/*
-gulp.task('style:build', function () {
-    gulp.src(path.src.style) 
-        //.pipe(sass({outputStyle: 'expanded'}))
-        .pipe(compass({
-            config_file: './config.rb',
-            css: 'stylesheets',
-            sass: 'sass'
-        }))
-        .pipe(prefixer({browsers:["chrome 37","firefox 30","ie 9", "opera 25", "safari 6"]}))
-        .pipe(cssmin())
-        .pipe(gulp.dest(path.build.css))
-        .pipe(connect.reload());
-});*/
-
 gulp.task('image:build', function () {
-    gulp.src(path.src.img)
+   /* gulp.src(path.src.img) 
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
@@ -106,7 +89,7 @@ gulp.task('image:build', function () {
             interlaced: true
         }))
         .pipe(gulp.dest(path.src.img))
-        .pipe(connect.reload());
+        .pipe(connect.reload());*/
     gulp.src(path.src.img_sprite)
         .pipe(sprites({
             imgName: 'sprite.png',
@@ -146,7 +129,8 @@ gulp.task('build', [
     'js:build',
     'style:build',
     'fonts:build',
-    'image:build'
+    'image:build',
+    'compass'
 ]);
 
 
