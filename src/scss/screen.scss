@@ -1,1 +1,31 @@
-@import "link/header";
+@import 'compass';
+@import "compass/reset";
+@import "compass/typography";
+@import "compass/css3";
+
+@import 'utils/variables';
+@import 'utils/mixins';
+@import 'utils/functions';
+@import "utils/helpers";
+
+@import 'base/mediaQueries';
+@import 'base/typography';
+
+@import "layout/grid";
+@import "layout/header";
+@import "layout/sidebar";
+@import "layout/footer";
+@import "layout/form";
+
+
+@import "components/breadcrumbs";
+@import "components/buttons";
+
+/// особые стили для отдельных страниц
+@import "pages/home";
+
+
+
+/// Файл с кодированнными изображениями всегда подключать в конце
+
+@import "base/base64";

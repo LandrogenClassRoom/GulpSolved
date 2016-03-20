@@ -33,6 +33,7 @@
 
   p {
     font-size: 15px;
+    font-family: $miri;
     line-height: 20px;
     margin-bottom: 1em;
   }
@@ -54,6 +55,7 @@
       li {
         margin-bottom: 9px;
         padding-left: 20px;
+        background: inline-image('base64/v2.png') no-repeat 0 5px
       }
     }
   }

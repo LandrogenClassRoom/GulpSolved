@@ -1,14 +1,14 @@
 ///  Структуру сайта
-//@import "compass/utilities/general/clearfix";
+@import "compass/utilities/general/clearfix";
 /// Прижатие подвала н низу страницы
 
 /// inherit box-sizing
 html {
-  //@include box-sizing(border-box);
+  @include box-sizing(border-box);
 }
 
 *, *:before, *:after {
-  //@include box-sizing(inherit);
+  @include box-sizing(inherit);
 }
 
 html, body {

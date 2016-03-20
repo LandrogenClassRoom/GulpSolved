@@ -4,7 +4,7 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     sass = require('gulp-sass'),
     rigger = require('gulp-rigger'),
-    cssmin = require('gulp-minify-css'),
+    cssmin = require('gulp-clean-css'),
     connect = require('gulp-connect'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
@@ -65,7 +65,7 @@ gulp.task('html:build', function () {
 
 gulp.task('js:build', function () {
     gulp.src(path.src.js) 
-        //.pipe(rigger())
+        .pipe(rigger())
         .pipe(uglify()) 
         .pipe(gulp.dest(path.build.js))
         .pipe(connect.reload());
