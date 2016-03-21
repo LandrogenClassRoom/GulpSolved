@@ -2,15 +2,14 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     prefixer = require('gulp-autoprefixer'),
     uglify = require('gulp-uglify'),
-    sass = require('gulp-sass'),
     rigger = require('gulp-rigger'),
-    cssmin = require('gulp-minify-css'),
     connect = require('gulp-connect'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
    // jade = require('gulp-jade'),
     sprites = require('gulp.spritesmith'),
-    compass = require('gulp-compass');
+    compass = require('gulp-compass'),
+    cleanCSS = require('gulp-clean-css');
 
 gulp.task('connect', function () {
     connect.server();
@@ -46,15 +45,6 @@ var path = {
     }
 };
 
-gulp.task('compass', function() {
-  gulp.src('./src/*.scss')
-    .pipe(compass({
-      config_file: './config.rb',
-      css: 'stylesheets',
-      sass: 'sass'
-    }))
-    .pipe(gulp.dest('app/assets/temp'));
-});
 
 gulp.task('html:build', function () {
     gulp.src(path.src.html) 
@@ -65,7 +55,7 @@ gulp.task('html:build', function () {
 
 gulp.task('js:build', function () {
     gulp.src(path.src.js) 
-        //.pipe(rigger())
+        .pipe(rigger())
         .pipe(uglify()) 
         .pipe(gulp.dest(path.build.js))
         .pipe(connect.reload());
@@ -73,23 +63,19 @@ gulp.task('js:build', function () {
 
 gulp.task('style:build', function () {
     gulp.src(path.src.style) 
-        .pipe(sass({outputStyle: 'expanded'}))
+        .pipe(compass({
+            project_path: __dirname + '/..',
+            css: 'build/css',
+            sass: 'src/scss',
+            image: 'src/img/template'
+        }))
         .pipe(prefixer({browsers:["chrome 37","firefox 30","ie 9", "opera 25", "safari 6"]}))
-        .pipe(cssmin())
+        .pipe(cleanCSS())
         .pipe(gulp.dest(path.build.css))
         .pipe(connect.reload());
 });
 
 gulp.task('image:build', function () {
-   /* gulp.src(path.src.img) 
-        .pipe(imagemin({
-            progressive: true,
-            svgoPlugins: [{removeViewBox: false}],
-            use: [pngquant()],
-            interlaced: true
-        }))
-        .pipe(gulp.dest(path.src.img))
-        .pipe(connect.reload());*/
     gulp.src(path.src.img_sprite)
         .pipe(sprites({
             imgName: 'sprite.png',
@@ -129,8 +115,7 @@ gulp.task('build', [
     'js:build',
     'style:build',
     'fonts:build',
-    'image:build',
-    'compass'
+    'image:build'
 ]);
 
 
