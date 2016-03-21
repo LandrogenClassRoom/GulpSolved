@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
     watch = require('gulp-watch'),
+    plumber = require('gulp-plumber'),
     prefixer = require('gulp-autoprefixer'),
     uglify = require('gulp-uglify'),
     sass = require('gulp-sass'),
@@ -10,10 +11,15 @@ var gulp = require('gulp'),
     pngquant = require('imagemin-pngquant'),
    // jade = require('gulp-jade'),
     sprites = require('gulp.spritesmith'),
+    rename = require("gulp-rename"),
     compass = require('gulp-compass');
 
 gulp.task('connect', function () {
-    connect.server();
+    connect.server({
+        root: path.build.html,
+        port: 8000,
+        livereload: true
+    });
 });
 
 var path = {
@@ -29,7 +35,7 @@ var path = {
     src: {
         html: 'src/*.html',
         js: 'src/js/scripts.js',
-        style: 'src/scss/screen.scss',  //Здесь указывается собирающий файл scss
+        style: 'src/scss/*.scss',  //Здесь указывается собирающий файл scss
         img: 'src/img/**/*.*',
         img_template: 'src/img/template/*.*',
         img_bs64: 'src/img/base64/*.*',
@@ -45,16 +51,6 @@ var path = {
         fonts: 'src/fonts/**/*.*'
     }
 };
-
-gulp.task('compass', function() {
-  gulp.src('./src/*.scss')
-    .pipe(compass({
-      config_file: './config.rb',
-      css: 'stylesheets',
-      sass: 'sass'
-    }))
-    .pipe(gulp.dest('app/assets/temp'));
-});
 
 gulp.task('html:build', function () {
     gulp.src(path.src.html) 
@@ -72,24 +68,28 @@ gulp.task('js:build', function () {
 });
 
 gulp.task('style:build', function () {
-    gulp.src(path.src.style) 
-        .pipe(sass({outputStyle: 'expanded'}))
+    gulp.src(path.src.style)
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }}))
+        .pipe(compass({
+            project_path: __dirname + '/..',
+            css: path.build.css,
+            sass: 'src/scss',
+            sourcemap: true,
+            relative: false
+        }))
         .pipe(prefixer({browsers:["chrome 37","firefox 30","ie 9", "opera 25", "safari 6"]}))
+        .pipe(gulp.dest(path.build.css))
         .pipe(cssmin())
+        .pipe(rename({suffix: ".min"}))
         .pipe(gulp.dest(path.build.css))
         .pipe(connect.reload());
 });
 
 gulp.task('image:build', function () {
-   /* gulp.src(path.src.img) 
-        .pipe(imagemin({
-            progressive: true,
-            svgoPlugins: [{removeViewBox: false}],
-            use: [pngquant()],
-            interlaced: true
-        }))
-        .pipe(gulp.dest(path.src.img))
-        .pipe(connect.reload());*/
     gulp.src(path.src.img_sprite)
         .pipe(sprites({
             imgName: 'sprite.png',
@@ -129,8 +129,7 @@ gulp.task('build', [
     'js:build',
     'style:build',
     'fonts:build',
-    'image:build',
-    'compass'
+    'image:build'
 ]);
 
 
@@ -153,4 +152,4 @@ gulp.task('watch', function(){
 });
 
 
-gulp.task('default', ['build', 'watch']);
+gulp.task('default', ['connect', 'build', 'watch']);
