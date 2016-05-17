@@ -1,0 +1,70 @@
+@import compass/utilities/general/clearfix
+html
+  +box-sizing(border-box)
+
+*, *:before, *:after
+  box-sizing: border-box
+
+  //@include box-sizing(inherit);
+
+html, body
+  min-height: 100%
+  height: 100%
+  position: relative
+
+body
+  min-width: 320px
+  overflow-x: hidden 
+
+.wrapper
+  min-height: 100%
+  margin-bottom: -$footer_height
+
+  +clearfix
+
+  &:after
+    content: ''
+    display: block
+    width: 100%
+    height: $footer_height
+
+header
+  box-sizing: border-box
+  z-index: 200
+  position: relative
+
+.container
+  max-width: $container_width
+  width: 100%
+  box-sizing: border-box
+  padding: 0 20px
+  margin: 0 auto
+
+  +clearfix
+
+.footer-wrapper
+  height: $footer_height
+  position: relative
+
+footer
+  @extend .container
+
+  +clearfix
+
+///sidebar
+
+aside
+  width: $sidebar_width
+  margin-right: -$sidebar_width
+  float: left
+
+.main
+  float: left
+  width: 100%
+  box-sizing: border-box
+  padding-bottom: 20px
+
+  +clearfix
+
+.content
+  @extend .container

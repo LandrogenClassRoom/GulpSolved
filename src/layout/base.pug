@@ -1,0 +1,26 @@
+doctype html
+html
+	head
+		link(rel="stylesheet" href="css/screen.css")
+	body
+		.wrapper
+			header
+				block header
+			.container
+				.inner
+					block breadcrumb
+						.breadcrumbs
+							a(href="/")
+								span Главная
+							block PageBread
+								span Инерная
+					block leftMenu
+					block content
+						.content
+					.clear
+			.clear
+			.footer-wrapper
+		footer
+			.inner
+				block footer
+		script(src="js/script.js")
