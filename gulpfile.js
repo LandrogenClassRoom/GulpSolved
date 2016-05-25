@@ -79,6 +79,7 @@ gulp.task('style:build', function () {
             project_path: __dirname + '/..',
             css: path.build.css,
             sass: 'src/sass',
+            image: 'src/img/template',
             sourcemap: true,
             relative: false
         }))
