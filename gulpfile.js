@@ -8,14 +8,10 @@ var gulp = require('gulp'),
     connect = require('gulp-connect'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
-    pug = require('gulp-pug'),
+   // jade = require('gulp-jade'),
     sprites = require('gulp.spritesmith'),
     rename = require("gulp-rename"),
-    compass = require('gulp-compass'),
-    urlAdjuster = require('gulp-css-url-adjuster'),
-    sourcemaps = require('gulp-sourcemaps'),
-    modernizr = require('gulp-modernizr'),
-    uncss = require('gulp-uncss');
+    compass = require('gulp-compass');
 
 gulp.task('connect', function () {
     connect.server({
@@ -36,9 +32,9 @@ var path = {
         fonts: 'build/fonts/'
     },
     src: {
-        html: 'src/*.pug',
+        html: 'src/*.html',
         js: 'src/js/scripts.js',
-        style: 'src/scss/*.scss',  //Здесь указывается собирающий файл sass
+        style: 'src/scss/*.scss',  //Здесь указывается собирающий файл scss
         img: 'src/img/**/*.*',
         img_template: 'src/img/template/*.*',
         img_bs64: 'src/img/base64/*.*',
@@ -47,7 +43,7 @@ var path = {
         fonts: 'src/fonts/**/*.*'
     },
     watch: {
-        html: 'src/**/*.pug',
+        html: 'src/**/*.html',
         js: 'src/js/**/*.js',
         style: 'src/scss/**/*.scss',
         img: 'src/img/**/*.*',
@@ -56,15 +52,8 @@ var path = {
 };
 
 gulp.task('html:build', function () {
-    gulp.src(path.src.html)
-        .pipe(plumber({
-            errorHandler: function (error) {
-                console.log(error.message);
-                this.emit('end');
-            }}))
-        .pipe(pug({
-            pretty: true,
-        }))
+    gulp.src(path.src.html) 
+        .pipe(rigger())
         .pipe(gulp.dest(path.build.html))
         .pipe(connect.reload());
 });
@@ -84,24 +73,14 @@ gulp.task('style:build', function () {
                 console.log(error.message);
                 this.emit('end');
             }}))
-        .pipe(sourcemaps.init())
         .pipe(compass({
             project_path: __dirname + '/..',
-            //config_file: 'config.rb',
             css: path.build.css,
             sass: 'src/scss',
-            image: 'src/img/template',
-            comments: false,
             sourcemap: true,
-            relative: false,
-            generated_images_path: true
+            relative: false
         }))
-        .pipe(urlAdjuster({
-            replace:  ['../../src/', '../'],
-        }))
-
-        .pipe(prefixer({browsers: ['last 2 version', 'safari 5', 'opera 12.1', 'ios 6', 'android 4']}))
-        .pipe(sourcemaps.write('.',{ includeContent: false}))
+        .pipe(prefixer({browsers:["chrome 37","firefox 30","ie 9", "opera 25", "safari 6"]}))
         .pipe(gulp.dest(path.build.css))
         .pipe(cssmin())
         .pipe(rename({suffix: ".min"}))
