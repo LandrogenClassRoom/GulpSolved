@@ -1,2 +1,0 @@
-# GulpSolved
-Gulp set
