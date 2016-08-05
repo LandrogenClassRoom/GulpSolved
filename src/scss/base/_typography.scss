@@ -20,26 +20,34 @@ p {
 }
 
 h1 {
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
 h3 {
+  font-size: 1.6rem;
+  font-weight: bold;
 }
 
 h4 {
 }
 
 ul {
+  list-style: disc;
+  margin-left: 2em;
   li {
-
   }
 }
 
 ol {
+  list-style: decimal;
+  margin-left: 2em;
   li {
-
   }
 }
 

@@ -7,7 +7,6 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^3.1.0",
     "gulp-clean-css": "^2.0.6",
     "gulp-compass": "^2.1.0",
     "gulp-connect": "^4.0.0",
@@ -21,6 +20,12 @@
     "gulp-css-url-adjuster": "*",
     "gulp-sourcemaps": "*",
     "gulp-modernizr": "*",
-    "gulp-uncss": "*"
+    "postcss-flexbugs-fixes": "*",
+    "gulp-postcss": "*",
+    "gulp-pug": "*",
+    "gulp-rename": "*",
+    "autoprefixer": "*",
+    "postcss-assets": "*",
+    "gulp-cssnano": "*"
   }
 }

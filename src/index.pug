@@ -1,7 +1,34 @@
 extends ./layout/base.pug
 include ./layout/header.pug
-	block breadcrumb
-		// эта фигня заменяет хлебные крошки базового шаблона, в данном случае обнуляет их потому что страница главная
-	block content
-		|контент главной страницы
+  block content
+    block breadcrumb
+    | контент главной страницы
+    .row
+      .col-xs-12.col-md-6.col-lg-4
+        .test-block test
+      .col-xs-6
+        .test-block test
+      .col-xs-4 1/4
+      .col-xs-4 1/4
+      .col-xs-4 1/4
+      .col-xs-2 1/2
+      .col-xs-2 1/2
+      .col-xs-2 1/2
+      .col-xs-2 1/2
+      .col-xs-2 1/2
+      .col-xs-2 1/2
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+      .col-xs-1 1/1
+
+
 include ./layout/footer.pug

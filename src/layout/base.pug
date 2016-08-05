@@ -1,33 +1,21 @@
 doctype html
 html
-	head
-		meta(http-equiv="Content-Type",content="text/html; charset=UTF-8")
-		meta(name='viewport', content='width=device-width, initial-scale=1.0')
-		title
-			block title
-				|Сайт компании
-		meta(description='' content='')
-		meta(keywords='' content='')
-		link(rel="stylesheet" href="css/screen.css")
-	body
-		.wrapper
-			header
-				block header
-			.container
-				.inner
-					block breadcrumb
-						.breadcrumbs
-							a(href="/")
-								span Главная
-							block PageBread
-								span Инерная
-					block leftMenu
-					block content
-						.content
-					.clear
-			.clear
-			.footer-wrapper
-		footer
-			.inner
-				block footer
-		script(src="js/script.js")
+  head
+    meta(http-equiv="Content-Type",content="text/html; charset=UTF-8")
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title
+      block title
+        | Сайт компании
+    meta(description='' content='')
+    meta(keywords='' content='')
+    link(rel="stylesheet" href="css/screen.css")
+  body
+    block header
+    .site-content
+      .inner
+        block leftMenu
+        block content
+          include block/breadcrumbs
+          .content
+    block footer
+    script(src="js/script.js")

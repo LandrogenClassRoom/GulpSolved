@@ -1,10 +1,9 @@
 var gulp = require('gulp'),
     watch = require('gulp-watch'),
     plumber = require('gulp-plumber'),
-    prefixer = require('gulp-autoprefixer'),
+    autoprefixer = require('autoprefixer'),
     uglify = require('gulp-uglify'),
     rigger = require('gulp-rigger'),
-    cssmin = require('gulp-clean-css'),
     connect = require('gulp-connect'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
@@ -13,9 +12,12 @@ var gulp = require('gulp'),
     rename = require("gulp-rename"),
     compass = require('gulp-compass'),
     urlAdjuster = require('gulp-css-url-adjuster'),
-    sourcemaps = require('gulp-sourcemaps'),
     modernizr = require('gulp-modernizr'),
-    uncss = require('gulp-uncss');
+    postcss = require('gulp-postcss'),
+    assets = require('postcss-assets'),
+    sourcemaps = require('gulp-sourcemaps'),
+    uncss = require('gulp-uncss'),
+    cssnano = require('gulp-cssnano');
 
 gulp.task('connect', function () {
     connect.server({
@@ -31,7 +33,7 @@ var path = {
         js: 'build/js/',
         css: 'build/css/',
         img_template: 'build/img/template',
-        img_bs64:'build/img/template/base64',
+        img_bs64: 'build/img/template/base64',
         img_content: 'build/img/',
         fonts: 'build/fonts/'
     },
@@ -61,7 +63,8 @@ gulp.task('html:build', function () {
             errorHandler: function (error) {
                 console.log(error.message);
                 this.emit('end');
-            }}))
+            }
+        }))
         .pipe(pug({
             pretty: true,
         }))
@@ -83,7 +86,8 @@ gulp.task('style:build', function () {
             errorHandler: function (error) {
                 console.log(error.message);
                 this.emit('end');
-            }}))
+            }
+        }))
         .pipe(sourcemaps.init())
         .pipe(compass({
             project_path: __dirname + '/..',
@@ -97,17 +101,25 @@ gulp.task('style:build', function () {
             generated_images_path: true
         }))
         .pipe(urlAdjuster({
-            replace:  ['../../src/', '../'],
+            replace: ['../../src/', '../'],
         }))
+        .pipe(postcss([
+            assets({
+                loadPaths: ['src/img/template', 'src/img/template/base64'],
+                relative: 'build/css',
 
-        .pipe(prefixer({browsers: ['last 2 version', 'safari 5', 'opera 12.1', 'ios 6', 'android 4']}))
-        .pipe(sourcemaps.write('.',{ includeContent: false}))
+            }),
+            require('postcss-flexbugs-fixes'),
+            autoprefixer({browsers: ['last 5 versions']})
+        ]))
+        .pipe(sourcemaps.write('.', {includeContent: true}))
         .pipe(gulp.dest(path.build.css))
-        .pipe(cssmin())
+        .pipe(cssnano())
         .pipe(rename({suffix: ".min"}))
         .pipe(gulp.dest(path.build.css))
         .pipe(connect.reload());
-});
+})
+;
 
 gulp.task('image:build', function () {
     gulp.src(path.src.img_sprite)
@@ -138,7 +150,7 @@ gulp.task('image:build', function () {
         .pipe(connect.reload());
 });
 
-gulp.task('fonts:build', function() {
+gulp.task('fonts:build', function () {
     gulp.src(path.src.fonts)
         .pipe(gulp.dest(path.build.fonts))
         .pipe(connect.reload());
@@ -153,20 +165,20 @@ gulp.task('build', [
 ]);
 
 
-gulp.task('watch', function(){
-    watch([path.watch.html], function(event, cb) {
+gulp.task('watch', function () {
+    watch([path.watch.html], function (event, cb) {
         gulp.start('html:build');
     });
-    watch([path.watch.style], function(event, cb) {
+    watch([path.watch.style], function (event, cb) {
         gulp.start('style:build');
     });
-    watch([path.watch.js], function(event, cb) {
+    watch([path.watch.js], function (event, cb) {
         gulp.start('js:build');
     });
-    watch([path.watch.img], function(event, cb) {
+    watch([path.watch.img], function (event, cb) {
         gulp.start('image:build');
     });
-    watch([path.watch.fonts], function(event, cb) {
+    watch([path.watch.fonts], function (event, cb) {
         gulp.start('fonts:build');
     });
 });

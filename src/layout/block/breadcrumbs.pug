@@ -1,0 +1,15 @@
+block breadcrumb
+  ul.breadcrumbs
+    li
+      a(href="/") Главная
+      |  /
+    block pageList
+      - var pageBreadList = ['']
+    block PageBread
+      each value, index in Object.keys(pageBreadList)
+        li
+          if index < Object.keys(pageBreadList).length - 1
+            a(href='#')= pageBreadList[index]
+            |  /
+          else
+            span= pageBreadList[index]

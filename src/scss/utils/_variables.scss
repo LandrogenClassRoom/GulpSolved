@@ -1,18 +1,59 @@
 /// Параметры шаблона
-$page_width: 1151px;
-$container_width: 952px;
-$footer_height: 311px;
-$sidebar_width: 258px;
-
-
+$inner-max-width: 1024px;
 // adapt width
-$mobile: 320px 480px;
-$s-tablete: 480px 767px;
-$tablet: 768px 1023px;
-$desktop: 1024px;
+// Here we define the breakpoints which will become the upper border for each media size.
+// The function em-calc() calculates the em-value from a px-value.
+$xsmall-breakpoint: em-calc(425)  !default;
+$small-breakpoint:  em-calc(640)  !default;
+$medium-breakpoint: em-calc(1024) !default;
+$large-breakpoint:  em-calc(1440) !default;
+$xlarge-breakpoint: em-calc(1920) !default;
 
-/// color-list 
-$yellow: #fff200;
+// Here we define the lower and upper bounds for each media size
+$xsmall-range:  ($xsmall-breakpoint) !default; /// 0, 425px
+$small-range:   ($small-breakpoint) !default; /// 0, 640px
+$medium-range:  ($small-breakpoint + em-calc(1), $medium-breakpoint - em-calc(1)) !default; /// 641px, 1024px
+$large-range:   ($medium-breakpoint, $large-breakpoint)  !default; /// 1025px, 1440px
+$xlarge-range:  ($large-breakpoint + em-calc(1), $xlarge-breakpoint) !default; /// 1441px, 1920px
+$xxlarge-range: ($xlarge-breakpoint + em-calc(1), em-calc(99999999)) !default; /// 1921px, ...
 
-/// font stack
+// Media Queries
+$screen: 'only screen' !default;
+
+$landscape: $screen (orientation landscape) !default;
+$portrait: $screen (orientation portrait) !default;
+
+$xsmall-up: $xsmall-range !default;
+$xsmall-only: $screen  (max-width $xsmall-range) !default;
+
+$small-up: $screen !default;
+$small-only: $screen  (max-width $small-range) !default;
+
+$medium-up: $screen (lower-bound($medium-range)) !default;
+$medium-only: $screen (lower-bound($medium-range) upper-bound($medium-range)) !default;
+$medium-down: $screen (max-width upper-bound($medium-range)) !default;
+
+$large-up: $screen(lower-bound($large-range)) !default;
+$large-only: $screen (lower-bound($large-range) upper-bound($large-range)) !default;
+$large-down: $screen (max-width upper-bound($large-range)) !default;
+
+$xlarge-up: $screen (lower-bound($xlarge-range)) !default;
+$xlarge-only: $screen (lower-bound($xlarge-range) upper-bound($xlarge-range)) !default;
+$xlarge-down: $screen (max-width upper-bound($xlarge-range)) !default;
+
+$xxlarge-up: $screen (lower-bound($xxlarge-range)) !default;
+$xxlarge-only: $screen (lower-bound($xxlarge-range) upper-bound($xxlarge-range)) !default;
+$xxlarge-down: $screen (max-width upper-bound($xxlarge-range)) !default;
+
+$retina: (
+        "#{$screen} and (-webkit-min-device-pixel-ratio: 2)",
+        "#{$screen} and (min--moz-device-pixel-ratio: 2)",
+        "#{$screen} and (-o-min-device-pixel-ratio: 2/1)",
+        "#{$screen} and (min-device-pixel-ratio: 2)",
+        "#{$screen} and (min-resolution: 192dpi)",
+        "#{$screen} and (min-resolution: 2dppx)"
+);
+
+//z stack
+$z-header: 600;
 
