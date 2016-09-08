@@ -1,0 +1,40 @@
+@import compass/utilities/general/clearfix
+html
+  +box-sizing(border-box)
+
+*,
+* ::before,
+* ::after
+  box-sizing: border-box
+
+html,
+body
+  min-width: $mobile
+  position: relative
+  margin: 0
+  padding: 0
+
+body
+  display: flex
+  flex-direction: column
+  min-width: $mobile
+  justify-content: space-between
+  min-height: 100%
+  box-orient: vertical
+
+header
+  position: relative
+  z-index: 200
+  flex: 0 0 auto
+
+section
+  flex: 1 0 auto
+
+  .inner
+    +clearfix
+    margin: 0 auto
+    max-width: $container-width
+    width: 100%
+
+footer
+  flex: 0 0 auto

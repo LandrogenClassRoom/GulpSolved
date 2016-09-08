@@ -1,0 +1,68 @@
+=font-family($font)
+  font-family: $font, Tahoma, Arial, sans-serif
+  letter-spacing: 0
+
+=flex-fix
+  &>*
+    flex: 0 0 auto
+    -webkit-box-flex-grow: 0
+    -moz-box-flex-grow: 0
+    -webkit-flex-grow: 0
+    -ms-flex-grow: 0
+    flex-grow: 0
+
+=container
+  box-sizing: border-box
+  margin: 0 auto
+  width: $container-width
+
+=ico-block
+  content: ''
+  display: block
+  position: absolute
+
+
+=clearfix
+  &::after
+    clear: both
+    content: ''
+    display: block
+
+=clearfixbefore
+  &::before
+    clear: both
+    content: ''
+    display: block
+
+=addico($name, $x: 0, $y: 0)
+  &
+    position: relative
+
+  &::after
+    +sprite-dimensions($icons, $name)
+    background: sprite($icons, $name)
+    content: ''
+    display: block
+    position: absolute
+
+    @if $x == 'center'
+      left: 50%
+      margin-left: -(sprite-width($icons, $name)) / 2
+    @else
+      left: $x
+
+    @if $y == 'center'
+      margin-top: -(sprite-height($icons, $name)) / 2
+      top: 50%
+    @else
+      top: $y
+
+=justify-block
+  &::after
+    content: ''
+    display: inline-block
+    width: 100%
+
+=last-margin0
+  &:last-child
+    margin: 0
